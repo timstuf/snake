@@ -25,7 +25,6 @@ public class Board {
 
     public void playGame() {
         while (true) {
-            clearScreen();
             System.out.println(getStringState());
             MoveEvent moveEvent = player.getNextMoveEvent();
             Snake newSnake = snake.move(moveEvent.getType());
