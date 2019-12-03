@@ -7,12 +7,10 @@ import static com.snake.model.MoveEvent.MoveEventType.*;
 
 public class Snake {
     private List<Point> points;
-    private Point head;
     private Direction headDirection;
 
     public Snake(List<Point> points, Direction headDirection) {
         this.points = points;
-        this.head = points.get(0);
         this.headDirection = headDirection;
     }
 
@@ -47,48 +45,48 @@ public class Snake {
 
     private Point moveLeft() {
         if (headDirection == Direction.UP) {
-            return new Point(head.getX() - 1, head.getY());
+            return new Point(points.get(0).getX() - 1, points.get(0).getY());
         }
         if (headDirection == Direction.DOWN) {
-            return new Point(head.getX() + 1, head.getY());
+            return new Point(points.get(0).getX() + 1, points.get(0).getY());
         }
         if (headDirection == Direction.LEFT) {
-            return new Point(head.getX(), head.getY() + 1);
+            return new Point(points.get(0).getX(), points.get(0).getY() + 1);
         }
         if (headDirection == Direction.RIGHT) {
-            return new Point(head.getX(), head.getY() - 1);
+            return new Point(points.get(0).getX(), points.get(0).getY() - 1);
         }
         throw new IllegalArgumentException("Invalid moveLeft state");
     }
 
     private Point moveRight() {
         if (headDirection == Direction.UP) {
-            return new Point(head.getX() + 1, head.getY());
+            return new Point(points.get(0).getX() + 1, points.get(0).getY());
         }
         if (headDirection == Direction.DOWN) {
-            return new Point(head.getX() - 1, head.getY());
+            return new Point(points.get(0).getX() - 1, points.get(0).getY());
         }
         if (headDirection == Direction.LEFT) {
-            return new Point(head.getX(), head.getY() - 1);
+            return new Point(points.get(0).getX(), points.get(0).getY() - 1);
         }
         if (headDirection == Direction.RIGHT) {
-            return new Point(head.getX(), head.getY() + 1);
+            return new Point(points.get(0).getX(), points.get(0).getY() + 1);
         }
         throw new IllegalArgumentException("Invalid moveRight state");
     }
 
     private Point moveForward() {
         if (headDirection == Direction.UP) {
-            return new Point(head.getX(), head.getY() - 1);
+            return new Point(points.get(0).getX(), points.get(0).getY() - 1);
         }
         if (headDirection == Direction.DOWN) {
-            return new Point(head.getX(), head.getY() + 1);
+            return new Point(points.get(0).getX(), points.get(0).getY() + 1);
         }
         if (headDirection == Direction.LEFT) {
-            return new Point(head.getX() - 1, head.getY());
+            return new Point(points.get(0).getX() - 1, points.get(0).getY());
         }
         if (headDirection == Direction.RIGHT) {
-            return new Point(head.getX() + 1, head.getY());
+            return new Point(points.get(0).getX() + 1, points.get(0).getY());
         }
         throw new IllegalArgumentException("Invalid moveForward state");
     }
@@ -98,7 +96,7 @@ public class Snake {
     }
 
     public Point getHead() {
-        return head;
+        return points.get(0);
     }
 
     private Direction getNewDirection(int direction) {
@@ -118,6 +116,17 @@ public class Snake {
             else throw new IllegalStateException("Wrong state of headDirection");
         }
         throw new IllegalArgumentException("Wrong number of direction");
+    }
+
+    public Snake eatFoodBlock(Point block) {
+        points.add(0, block);
+        return this;
+    }
+
+    public boolean crossedItself() {
+        if (points.size() == 1) return false;
+        List<Point> pointsWithoutHead = points.subList(1, points.size());
+        return pointsWithoutHead.contains(points.get(0));
     }
 
     public enum Direction {
