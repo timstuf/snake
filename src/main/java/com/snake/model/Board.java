@@ -16,24 +16,23 @@ public class Board {
         points.add(new Point(width / 2, height - 1));
         this.snake = new Snake(points, Snake.Direction.UP);
         this.player = player;
+        this.foodBlocks = createTestFoodBlocks();
+    }
+
+    private List<Point> createTestFoodBlocks(){
         List<Point> blocks = new ArrayList<>();
         blocks.add(new Point(0, 1));
         blocks.add(new Point(3, 3));
         blocks.add(new Point(2, 1));
-        this.foodBlocks = blocks;
+        return blocks;
     }
-
 
     public void playGame() {
         while (true) {
             System.out.println(getStringState());
             MoveEvent moveEvent = player.getNextMoveEvent();
             Snake newSnake = snake.move(moveEvent.getType());
-            if (newSnake.crossedItself()) {
-                System.out.println("GAME OVER");
-                break;
-            }
-            if (!allPointsOnBoard(newSnake.getPoints())) {
+            if (newSnake.crossedItself() || !allPointsOnBoard(newSnake.getPoints())) {
                 System.out.println("GAME OVER");
                 break;
             }
@@ -42,9 +41,10 @@ public class Board {
                 continue;
             }
             if (hasEaten(newSnake.getHead())) {
-                foodBlocks.remove(newSnake.getPoints().get(0));
-                snake.eatFoodBlock(newSnake.getPoints().get(0));
+                foodBlocks.remove(newSnake.getHead());
+                newSnake.eatFoodBlock(snake.getTail());
                 foodBlocks.add(generateFoodBlock());
+                snake = newSnake;
             }
         }
     }

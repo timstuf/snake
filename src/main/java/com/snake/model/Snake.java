@@ -39,10 +39,6 @@ public class Snake {
         throw new IllegalArgumentException("Invalid move state");
     }
 
-    public Direction getHeadDirection() {
-        return headDirection;
-    }
-
     private Point moveLeft() {
         if (headDirection == Direction.UP) {
             return new Point(points.get(0).getX() - 1, points.get(0).getY());
@@ -99,6 +95,10 @@ public class Snake {
         return points.get(0);
     }
 
+    public Direction getHeadDirection() {
+        return headDirection;
+    }
+
     private Direction getNewDirection(int direction) {
         if (direction == 0) return headDirection;
         if (direction == -1) {
@@ -118,9 +118,12 @@ public class Snake {
         throw new IllegalArgumentException("Wrong number of direction");
     }
 
-    public Snake eatFoodBlock(Point block) {
-        points.add(0, block);
-        return this;
+    public void eatFoodBlock(Point block) {
+        points.add(points.size(), block);
+    }
+
+    public Point getTail(){
+        return points.get(points.size()-1);
     }
 
     public boolean crossedItself() {
