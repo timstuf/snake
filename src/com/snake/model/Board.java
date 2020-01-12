@@ -62,12 +62,8 @@ public class Board {
         return block;
     }
 
-    private boolean allPointsOnBoard(List<Point> newPoints) {
-        for (Point point : newPoints) {
-            if (point.getX() < 0 || point.getY() < 0 || point.getY() > height - 1 || point.getX() > width - 1)
-                return false;
-        }
-        return true;
+    private boolean allPointsOnBoard(List<com.snake.model.Point> newPoints) {
+        return newPoints.stream().noneMatch(point -> point.getX() < 0 || point.getY() < 0 || point.getY() > height - 1 || point.getX() > width - 1);
     }
 
     private boolean hasEaten(Point newHead) {
